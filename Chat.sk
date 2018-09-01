@@ -11,5 +11,7 @@ on chat:
 			send "&c%player%&8: &f%colored message%" to all players
 		if {team::%player%} is "blue":
 			send "&9%player%&8: &f%colored message%" to all players
+		if {team::%player%} is "dev":
+			send "&7%player%&8: &f%colored message%" to all players
 
 
