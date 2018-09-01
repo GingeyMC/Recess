@@ -54,6 +54,3 @@ command /gms [<text>]:
 	trigger:
 		set the player's gamemode to survival
 
-on command:
-	command sender is player
-	send "&b| &7%player% ran &b/%full command%" to all players
