@@ -21,7 +21,8 @@ on quit:
 	clear the player's inventory
 	delete {team::%player%}
 	set quit message to ""
-	send "&c%player% has left the server." to all players
+	if {ban::%player's uuid%} is not set:
+		send "&c%player% has left the server." to all players
 
 #
 
