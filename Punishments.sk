@@ -11,10 +11,10 @@ command /ban [<offlineplayer>] [<text>]:
 			if arg 2 is not set:
 				make player execute command "/ban"
 			else:
-				set {ban::%arg 1's uuid%} to "%nl% &b&lRecess &8|%nl% &fYou have been banned by &b%arg 1%&f.%nl% &fReason: &b%arg 1%"
+				set {ban::%arg 1's uuid%} to "%nl% &b&lRecess &8|%nl% &fYou have been banned by &b%arg 1%&f.%nl% &fReason: &b%arg 2%%nl% &fAppeal: &bhttps://bit.ly/Recess-Appeal%nl% "
 				kick arg 1 due to "%{ban::%arg 1's uuid%}%"
 				send "" to all players
-				send " &b&lRecess &8| &f%arg 1% has been banned by %player%.%nl% &fReason: &b%arg 2%" to all players
+				send " &b&lRecess &8| &f%arg 1% has been banned by %player%.%nl% &fReason: &b%arg 2% " to all players
 				send "" to all players
 
 command /unban [<offlineplayer>]:
@@ -22,8 +22,11 @@ command /unban [<offlineplayer>]:
 		if arg 1 is not set:
 			send "&c/unban (player)"
 		else:
-			delete {ban::%arg 1's uuid%}
-			send "" to all players
-			send " &b&lRecess &8| &f%arg 1% has been unbanned by %player%." to all players
-			send "" to all players
+			if {ban::%arg 1's uuid%} is not set:
+				send "&c%arg 1% is not banned."
+			else:
+				delete {ban::%arg 1's uuid%}
+				send "" to all players
+				send " &b&lRecess &8| &f%arg 1% has been unbanned by %player%." to all players
+				send "" to all players
 		
