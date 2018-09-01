@@ -1,0 +1,29 @@
+on connect:
+	if {ban::%player's uuid%} is set:
+		kick player due to "%{ban::%player's uuid%}%"
+		send "&c%player% tried to join but is banned." to all players
+
+command /ban [<offlineplayer>] [<text>]:
+	trigger:
+		if arg 1 is not set:
+			send "&c/ban (player) (reason)"
+		else:
+			if arg 2 is not set:
+				make player execute command "/ban"
+			else:
+				set {ban::%arg 1's uuid%} to "%nl% &b&lRecess &8|%nl% &fYou have been banned by &b%arg 1%&f.%nl% &fReason: &b%arg 1%"
+				kick arg 1 due to "%{ban::%arg 1's uuid%}%"
+				send "" to all players
+				send " &b&lRecess &8| &f%arg 1% has been banned by %player%.%nl% &fReason: &b%arg 2%" to all players
+				send "" to all players
+
+command /unban [<offlineplayer>]:
+	trigger:
+		if arg 1 is not set:
+			send "&c/unban (player)"
+		else:
+			delete {ban::%arg 1's uuid%}
+			send "" to all players
+			send " &b&lRecess &8| &f%arg 1% has been unbanned by %player%." to all players
+			send "" to all players
+		
