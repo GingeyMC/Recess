@@ -28,7 +28,7 @@ on quit:
 
 on break of wool:14:
 	player's gamemode is not creative
-	if {team::%player%} is not set:
+	if {team::%player%} is "spectator":
 		cancel event
 	else:
 		if {team::%player%} is "red":
@@ -42,7 +42,7 @@ on break of wool:14:
 
 on break of wool:11:
 	player's gamemode is not creative
-	if {team::%player%} is not set:
+	if {team::%player%} is "spectator":
 		cancel event
 	else:
 		if {team::%player%} is "blue":
@@ -71,7 +71,7 @@ every second:
 		if {team::%loop-player%} is "spectator":
 			set tablist name of loop-player to " &b%loop-player%"
 			loop all players:
-				if {team::%loop-player-2%} is not "spectator":
+				if {team::%loop-player-2%} is not "spectator" or "dev":
 					hide loop-player-1 from loop-player-2
 				else:
 					reveal loop-player-2 to loop-player-1
@@ -186,5 +186,36 @@ on rightclick with cauldron:
 	{team::%player%} is "spectator"
 	cancel event
 	make player execute command "/forums"
+
+on rightclick with diamond:
+	{team::%player%} is "spectator"
+	make player execute command "/buy"
+
+#
+
+command /team [<text>]:
+	trigger:
+		if arg 1 is not set:
+			send ""
+			send " &b&lTeams &8| &fRed, Blue, Spectator, Dev"
+			send ""
+		else:
+			if arg 1 is "red":
+				set {team::%player%} to "red"
+				kit(player)
+			else if arg 1 is "blue":
+				set {team::%player%} to "blue"
+				kit(player)
+			else if arg 1 is "spectator":
+				set {team::%player%} to "spectator"
+				kit(player)
+			else if arg 1 is "dev":
+				set {team::%player%} to "dev"
+				clear the player's inventory
+				set the player's gamemode to creative
+				set the player's tablist name to " &f(Developing) &7%player%"
+			else:
+				make player execute command "/team"
+			
 
 
