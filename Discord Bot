@@ -1,0 +1,51 @@
+const { Client } = require('discord.js');
+const client = new Client();
+const prefix = '!';
+
+
+client.on('ready', () => {
+    console.log([
+        '--------------------',
+        'Reloaded Recess bot',
+        '--------------------',
+    ].join('\n'));
+	client.user.setActivity('recess.minehut.gg | !help', { type: 'playing' });
+
+});
+
+client.on('message', message => {
+    if (message.author.bot) return;
+    const args = message.content.split(' ');
+    switch (args[0]) {
+		case prefix + 'forums':
+			message.delete(1);
+			message.author.send([
+				'↶⇋⇌⇋⇌⇋⇌⇋⇌↷',
+				'**Forums Link:**',
+				'https://recess.cf',
+				'↶⇋⇌⇋⇌⇋⇌⇋⇌↷',
+			].join('\n'));
+			break;
+		case prefix + 'help':
+			message.delete(1);
+			message.author.send([
+				'↶⇋⇌⇋⇌⇋⇌⇋⇌↷',
+				'**!help:** show this message',
+				'**!forums:** show the forums link',
+				'**!discord:** direct link to share with your friends',
+				'↶⇋⇌⇋⇌⇋⇌⇋⇌↷',
+			].join('\n'));
+			break;
+		case prefix + 'discord':
+			message.delete(1);
+			message.author.send([
+				'↶⇋⇌⇋⇌⇋⇌⇋⇌↷',
+				'**Link:** https://discord.gg/3f6gPpd',
+				'↶⇋⇌⇋⇌⇋⇌⇋⇌↷',
+			].join('\n'));
+            break;
+    }
+
+});
+
+client.login('NDg1NTU2NzU5MzQ4NTEwNzIx.Dmywgw.ZIBxzRS6Duy3XE76Kh9PC0Sx7j8');
