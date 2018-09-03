@@ -1,2 +1,9 @@
 # Recess
-All of Recess' Skripts.
+View the progress/development of Recess
+
+___
+# Developers
+___
+
+- MrScopes
+- Vinixs
