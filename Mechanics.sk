@@ -10,7 +10,6 @@ on drop:
 	cancel event
 
 on join:
-	op player
 	make player execute command "/spawn"
 	set {team::%player%} to "spectator"
 	kit(player)
@@ -103,7 +102,7 @@ function kit(p: player):
 			set slot 5 of {_p} to 1 of {discord}
 			set slot 6 of {_p} to 1 of {forums}
 			set slot 7 of {_p} to 1 of {donate}
-		else:
+		else if {team::%{_p}%} is "blue" or "red":
 			set {_p}'s flight mode to false
 			set slot 0 of {_p} to {sword}
 			set slot 1 of {_p} to 1 bow
