@@ -219,3 +219,8 @@ command /team [<text>]:
 			
 
 
+#
+
+on damage of player:
+    if {team::%attacker%} is "spectator":
+        cancel event
