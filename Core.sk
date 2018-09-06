@@ -1,6 +1,16 @@
 on command:
+	{commandspy::%player's uuid%} is not set
 	set {_cmd} to command
-	if {_cmd} is not "s" or "staffchat":
+	if {_cmd} is not "s" or "staffchat" or "" or "":
 		loop all players:
 			if {commandspy::%loop-player's uuid%} is set:
 				send "&3(%player%) &7ran &f/%full command%" to loop-player
+
+on chat:
+	set {_time} to difference between {chat::%player's uuid%} and now
+	if {_time} is less than 2 seconds:
+		send "&7Please wait %difference between 2 seconds and {_time}% to chat."
+		cancel event
+	else:
+		set chat format to "&7%player%&8: &f%message%"
+		set {chat::%player's uuid%} to now
