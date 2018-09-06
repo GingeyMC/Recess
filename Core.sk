@@ -1,3 +1,6 @@
 on command:
 	set {_cmd} to command
-	send "%{_cmd}%"
+	if {_cmd} is not "s" or "staffchat":
+		loop all players:
+			if {commandspy::%loop-player's uuid%} is set:
+				send "&3(%player%) &7ran &f/%full command%" to loop-player
