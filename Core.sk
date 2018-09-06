@@ -1,4 +1,5 @@
 on command:
+	command sender is player
 	{commandspy::%player's uuid%} is not set
 	set {_cmd} to command
 	if {_cmd} is not "s" or "staffchat" or "" or "":
@@ -12,5 +13,9 @@ on chat:
 		send "&7Please wait %difference between 2 seconds and {_time}% to chat."
 		cancel event
 	else:
-		set chat format to "&7%player%&8: &f%message%"
-		set {chat::%player's uuid%} to now
+		if message contains "@everyone" or "@here":
+			send "&7Mass-Mentioning is disabled."
+			cancel event
+		else:
+			set chat format to "&7%player%&8: &f%message%"
+			set {chat::%player's uuid%} to now
