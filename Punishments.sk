@@ -2,22 +2,35 @@ on connect:
 	if {ban::%player's uuid%} is set:
 		kick player due to "%{ban::%player's uuid%}%"
 		send "&c%player% tried to join but is banned." to all players
+	
+on quit:
+	set quit message to ""
+	if {ban::%player's uuid%} is not set:
+		send "&8[&c-&8] &7%player%" to all players
+
+on join:
+	set join message to ""
+	send "&8[&a+&8] &7%player%" to all players
 
 command /ban [<offlineplayer>] [<text>]:
+	permission: mod
+	permission message: &cYou don't have access to that command.
 	trigger:
 		if arg 1 is not set:
-			send "&c/ban (player) (reason)"
+			send "&c/ban (player) (reason...)"
 		else:
 			if arg 2 is not set:
 				make player execute command "/ban"
 			else:
-				set {ban::%arg 1's uuid%} to "%nl% &b&lRecess &8|%nl% &fYou have been banned by &b%arg 1%&f.%nl% &fReason: &b%arg 2%%nl% &fAppeal: &bhttps://bit.ly/Recess-Appeal%nl% "
+				set {ban::%arg 1's uuid%} to "%nl% &b&lRecess &8|%nl% &fYou have been banned by &b%player%&f.%nl% &fReason: &b%arg 2%%nl% &fAppeal: &bhttps://bit.ly/Recess-Appeal%nl% "
 				kick arg 1 due to "%{ban::%arg 1's uuid%}%"
 				send "" to all players
 				send " &b&lRecess &8| &f%arg 1% has been banned by %player%.%nl% &fReason: &b%arg 2% " to all players
 				send "" to all players
 
 command /unban [<offlineplayer>]:
+	permission: mod
+	permission message: &cYou don't have access to that command.
 	trigger:
 		if arg 1 is not set:
 			send "&c/unban (player)"
@@ -30,5 +43,22 @@ command /unban [<offlineplayer>]:
 				send " &b&lRecess &8| &f%arg 1% has been unbanned by %player%." to all players
 				send "" to all players
 				
+command /kick [<offlineplayer>] [<text>]:
+	permission: mod
+	permission message: &cYou don't have access to that command.
+	trigger:
+		if arg 1 is not set:
+			send "&c/kick (player) (reason...)"
+		else:
+			if arg 1 is offline:
+				send "&c%arg 1% is not online."
+			else:
+				set {ban::%arg 1's uuid%} to true
+				kick arg 1 due to ""%nl% &b&lRecess &8|%nl% &fYou have been kicked by &b%player%&f.%nl% &fReason: &b%arg 2%%nl% "
+				delete {ban::%arg 1's uuid%}
+				send "" to all players
+				send " &b&lRecess &8| &f%arg 1% has been kicked by %player%.%nl% &fReason: &b%arg 2% " to all players
+				send "" to all players
 
-		
+
+				
