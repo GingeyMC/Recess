@@ -54,7 +54,7 @@ command /kick [<offlineplayer>] [<text>]:
 				send "&c%arg 1% is not online."
 			else:
 				set {ban::%arg 1's uuid%} to true
-				kick arg 1 due to ""%nl% &b&lRecess &8|%nl% &fYou have been kicked by &b%player%&f.%nl% &fReason: &b%arg 2%%nl% "
+				kick arg 1 due to "%nl% &b&lRecess &8|%nl% &fYou have been kicked by &b%player%&f.%nl% &fReason: &b%arg 2%%nl% "
 				delete {ban::%arg 1's uuid%}
 				send "" to all players
 				send " &b&lRecess &8| &f%arg 1% has been kicked by %player%.%nl% &fReason: &b%arg 2% " to all players
