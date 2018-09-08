@@ -1,0 +1,60 @@
+command /api [<text>]:
+	description: view data from any online Minehut server.
+	trigger:
+		if arg 1 is not set:
+			send "&c/api (server)"
+		else:
+			set {_url} to text from url "https://pocket.minehut.com/server/%arg 1%?byName=true"
+			if {_url} is "{""server"":null}":
+				send "&c'%arg 1%' does not exist!"
+			else:
+				set {_spliturl::*} to {_url} split at ","
+				loop {_spliturl::*}:
+					if "%loop-value%" contains """motd"":":
+						set {_motd} to "%loop-value%"
+						replace all """motd"":" in {_motd} with ""
+						replace all "\n" in {_motd} with "%nl% "
+						replace all """" in {_motd} with ""
+
+					if "%loop-value%" contains """max_players"":":
+						set {_maxplayers} to "%loop-value%"
+						replace all """max_players"":" in {_maxplayers} with ""
+					if "%loop-value%" contains "{""server"":{""_id"":" or "_id"":":
+						set {_id} to "%loop-value%"
+						replace all "{""server"":{""_id"":" in {_id} with ""
+						replace all """_id"":" in {_id} with ""
+						replace all """" in {_id} with ""
+				set {_url} to text from url "https://pocket.minehut.com/servers"
+				if {_url} contains "{""_id"":""%{_id}%""":
+					set {_spliturl::*} to {_url} split at ","
+					loop {_spliturl::*}:
+						"%loop-value%" contains "{""_id"":""%{_id}%""":
+							set {_index} to loop-index
+							add 1 to {_index}
+							set {_onlineplayers} to "%{_spliturl::%{_index}%}%"
+							replace all """playerCount"":" in {_onlineplayers} with ""
+					if {_maxplayers} is "10":
+						set {_ram} to "1.0gb"
+					if {_maxplayers} is "15":
+						set {_ram} to "1.2gb"
+					if {_maxplayers} is "25":
+						set {_ram} to "2.0gb"
+					if {_maxplayers} is "35":
+						set {_ram} to "2.8gb"
+					if {_maxplayers} is "42":
+						set {_ram} to "3.4gb"
+					if {_maxplayers} is "50":
+						set {_ram} to "4.0gb"
+					if {_maxplayers} is "60":
+						set {_ram} to "4.8gb"
+					if {_maxplayers} is "75":
+						set {_ram} to "6.0gb"
+					send ""
+					send " &bAPI | &3Viewing data of &b%arg 1%"
+					send " &b- &3%{_onlineplayers}%&b/&3%{_maxplayers}% &bonline"
+					send " &b- &3Ram Usage: &bN/A&3/&b%{_ram}%"
+					send " &b- &3MOTD:"
+					send " &7%{_motd}%"
+					send ""
+				else:
+					send "&c'%arg 1%' is currently offline."
