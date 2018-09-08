@@ -15,7 +15,6 @@ command /api [<text>]:
 						replace all """motd"":" in {_motd} with ""
 						replace all "\n" in {_motd} with "%nl% "
 						replace all """" in {_motd} with ""
-
 					if "%loop-value%" contains """max_players"":":
 						set {_maxplayers} to "%loop-value%"
 						replace all """max_players"":" in {_maxplayers} with ""
@@ -29,9 +28,10 @@ command /api [<text>]:
 					set {_spliturl::*} to {_url} split at ","
 					loop {_spliturl::*}:
 						"%loop-value%" contains "{""_id"":""%{_id}%""":
-							set {_index} to loop-index
-							add 1 to {_index}
-							set {_onlineplayers} to "%{_spliturl::%{_index}%}%"
+							#set {_index} to loop-index parsed as integer
+							#add 1 to {_index}
+							#set {_onlineplayers} to "%{_spliturl::%{_index}%}%"
+							set {_onlineplayers} to "%{_spliturl::2}%"
 							replace all """playerCount"":" in {_onlineplayers} with ""
 					if {_maxplayers} is "10":
 						set {_ram} to "1.0gb"
