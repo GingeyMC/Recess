@@ -23,6 +23,10 @@ on flight toggle:
 	
 every second:
 	loop all players:
+		if {rank::%loop-player's uuid%} is not set:
+			set loop-player's tablist name to "&7%loop-player%"
+		else:
+			set loop-player's tablist name to "%{rank::%loop-player's uuid%}% %loop-player%"
 		if {authorized::%loop-player's uuid%} is set:
 			if distance between {spawn} and location of loop-player is greater than or equal to 1:
 				delete {authorized::%loop-player's uuid%}
@@ -30,29 +34,12 @@ every second:
 
 on quit:
 	set leave message to ""
-	set {rank::%player's uuid%} to {rank::%player's uuid%}
-	if {rank::%player's uuid%} is not set:
-		send "&7%player% &3left your lobby." to all players
-	else if {rank::%player's uuid%} is "vip":
-		send "&a[VIP] %player% &3left your lobby." to all players
-	else if {rank::%player's uuid%} is "pro":
-		send "&b[PRO] %player% &3left your lobby." to all players
-	else if {rank::%player's uuid%} is "legend":
-		send "&6[LEGEND] %player% &3left your lobby." to all players
-	else if {rank::%player's uuid%} is "patron":
-		send "&9[PATRON] %player% &3left your lobby." to all players
-	else if {rank::%player's uuid%} is "jrmod":
-		send "&e[JR.MOD] %player% &3left your lobby." to all players
-	else if {rank::%player's uuid%} is "mod":
-		send "&e{MOD} %player% &3left your lobby." to all players
-	else if {rank::%player's uuid%} is "srmod":
-		send "&e[SR.MOD] %player% &3left your lobby." to all players
-	else if {rank::%player's uuid%} is "admin":
-		send "&c[ADMIN] %player% &3left your lobby." to all players
-	else if {rank::%player's uuid%} is "dev":
-		send "&c[DEV] %player% &3left your lobby." to all players
-	else:
-		send "&7%player% &3left your lobby." to all players
+	if {ban::%player's uuid%} is not set:
+		set {rank::%player's uuid%} to {rank::%player's uuid%}
+		if {rank::%player's uuid%} is not set:
+			send "&7%player% &3left your lobby." to all players
+		else:
+			send "%{rank::%player's uuid%}% %player% &3left your lobby." to all players
 
 on join:
 	set join message to ""
@@ -65,29 +52,10 @@ on join:
 	teleport player to {spawn}
 	set {authorized::%player's uuid%} to random 5 char string from `a-zA-Z0-9`
 	send "%nl%&bSay ""%{authorized::%player's uuid%}%"" or move to enable chat.%nl% "
-	set {rank::%player's uuid%} to {rank::%player's uuid%}
 	if {rank::%player's uuid%} is not set:
 		send "&7%player% &3joined your lobby." to all players
-	else if {rank::%player's uuid%} is "vip":
-		send "&a[VIP] %player% &3joined your lobby." to all players
-	else if {rank::%player's uuid%} is "pro":
-		send "&b[PRO] %player% &3joined your lobby." to all players
-	else if {rank::%player's uuid%} is "legend":
-		send "&6[LEGEND] %player% &3joined your lobby." to all players
-	else if {rank::%player's uuid%} is "patron":
-		send "&9[PATRON] %player% &3joined your lobby." to all players
-	else if {rank::%player's uuid%} is "jrmod":
-		send "&e[JR.MOD] %player% &3joined your lobby." to all players
-	else if {rank::%player's uuid%} is "mod":
-		send "&e{MOD} %player% &3joined your lobby." to all players
-	else if {rank::%player's uuid%} is "srmod":
-		send "&e[SR.MOD] %player% &3joined your lobby." to all players
-	else if {rank::%player's uuid%} is "admin":
-		send "&c[ADMIN] %player% &3joined your lobby." to all players
-	else if {rank::%player's uuid%} is "dev":
-		send "&c[DEV] %player% &3joined your lobby." to all players
 	else:
-		send "&7%player% &3joined your lobby." to all players
+		send "%{rank::%player's uuid%}% %player% &3joined your lobby." to all players
 
 on rightclick with sign:
 	player's gamemode is not creative
@@ -95,8 +63,6 @@ on rightclick with sign:
 	open virtual chest inventory with size 6 named "&8Server List (minehut.com)" to player
 
 on rightclick with clock:
-	player's gamemode is not creative
-	cancel event
 	open virtual chest inventory with size 1 named "&7Cosmetics" to player
 
 on chat:
@@ -111,26 +77,8 @@ on chat:
 	else:
 		if {rank::%player's uuid%} is not set:
 			set chat format to "&7%player%: &7%message%"
-		else if {rank::%player's uuid%} is "vip":
-			set chat format to "&a[VIP] %player%&f: %message%"
-		else if {rank::%player's uuid%} is "pro":
-			set chat format to "&b[PRO] %player%&f: %message%"
-		else if {rank::%player's uuid%} is "legend":
-			set chat format to "&6[LEGEND] %player%&f: %message%"
-		else if {rank::%player's uuid%} is "patron":
-			set chat format to "&9[PATRON] %player%&f: %message%"
-		else if {rank::%player's uuid%} is "jrmod":
-			set chat format to "&e[JR.MOD] %player%&f: %message%"
-		else if {rank::%player's uuid%} is "mod":
-			set chat format to "&e[MOD] %player%&f: %message%"
-		else if {rank::%player's uuid%} is "srmod":
-			set chat format to "&e[SR.MOD] %player%&f: %message%"
-		else if {rank::%player's uuid%} is "admin":
-			set chat format to "&c[ADMIN] %player%&f: %message%"
-		else if {rank::%player's uuid%} is "dev":
-			set chat format to "&c[DEV] %player%&f: %message%"
 		else:
-			set chat format to "&7%player%: &7%message%"
+			set chat format to "%{rank::%player's uuid%}% %player%&f: %message%"
 
 command /rank [<offlineplayer>] [<text>]:
 	permission: op
@@ -140,25 +88,25 @@ command /rank [<offlineplayer>] [<text>]:
 			send "/rank (player) (rank)"
 		else:
 			if arg 2 is "default":
-				set {rank::%arg 1's uuid%} to "default"
+				delete {rank::%arg 1's uuid%}
 			else if arg 2 is "vip":
-				set {rank::%arg 1's uuid%} to "vip"
+				set {rank::%arg 1's uuid%} to "&a[VIP]"
 			else if arg 2 is "pro":
-				set {rank::%arg 1's uuid%} to "pro"
+				set {rank::%arg 1's uuid%} to "&b[PRO]"
 			else if arg 2 is "legend":
-				set {rank::%arg 1's uuid%} to "legend"
+				set {rank::%arg 1's uuid%} to "&6[LEGEND]"
 			else if arg 2 is "patron":
-				set {rank::%arg 1's uuid%} to "patron"
+				set {rank::%arg 1's uuid%} to "&9[PATRON]"
 			else if arg 2 is "jrmod" or "jr":
-				set {rank::%arg 1's uuid%} to "jrmod"
+				set {rank::%arg 1's uuid%} to "&e[JR.MOD]"
 			else if arg 2 is "mod":
-				set {rank::%arg 1's uuid%} to "mod"
+				set {rank::%arg 1's uuid%} to "&e[MOD]"
 			else if arg 2 is "srmod" or "sr":
-				set {rank::%arg 1's uuid%} to "srmod"
+				set {rank::%arg 1's uuid%} to "&e[SR.MOD]"
 			else if arg 2 is "admin":
-				set {rank::%arg 1's uuid%} to "admin"
+				set {rank::%arg 1's uuid%} to "&c[ADMIN]"
 			else if arg 2 is "dev":
-				set {rank::%arg 1's uuid%} to "dev"
+				set {rank::%arg 1's uuid%} to "&c[DEV]"
 			else if arg 2 is not "default" or "vip" or "pro" or "legend" or "patron" or "jrmod" or "jr" or "mod" or "srmod" or "sr" or "admin" or "dev":
 				send "&cInvalid Rank!"
 
